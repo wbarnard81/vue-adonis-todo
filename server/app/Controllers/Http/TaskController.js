@@ -1,30 +1,36 @@
 "use strict";
 
 const Project = use("App/Models/Project");
+const Task = use("App/Models/Task");
 const AuthorizationService = use("App/Services/AuthorizationService");
 
-class ProjectController {
-  async index({ auth }) {
+class TaskController {
+  async index({ auth, request, params }) {
     const user = await auth.getUser();
-    return await user.projects().fetch();
+    const { id } = params;
+    const project = await Project.find(id);
+    AuthorizationService.verifyPermission(project, user);
+    return await project.tasks().fetch();
   }
 
-  async create({ auth, request }) {
+  async create({ auth, request, params }) {
     const user = await auth.getUser();
-    const { title } = request.all();
-    const project = new Project();
-    project.fill({ title });
-    await user.projects().save(project);
-    return project;
+    const { description } = request.all();
+    const { id } = params;
+    const project = await Project.find(id);
+    AuthorizationService.verifyPermission(project, user);
+    const task = new Task();
+    task.fill({
+      description
+    });
+    await project.tasks().save(task);
+    return task;
   }
 
   async destroy({ auth, request, params }) {
     const user = await auth.getUser();
     const { id } = params;
     const project = await Project.find(id);
-    // if (project.user_id !== user.id) {
-    //   return Response.stats(403);
-    // }
     AuthorizationService.verifyPermission(project, user);
     await project.delete();
     return project;
@@ -35,10 +41,10 @@ class ProjectController {
     const { id } = params;
     const project = await Project.find(id);
     AuthorizationService.verifyPermission(project, user);
-    project.merge(request.only("title"));
+    project.merge(request.only("description"));
     await project.save();
     return project;
   }
 }
 
-module.exports = ProjectController;
+module.exports = TaskController;
