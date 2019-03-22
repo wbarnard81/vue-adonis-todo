@@ -31,8 +31,6 @@ Route.group(() => {
   Route.patch("projects/:id", "ProjectController.update").middleware("auth");
   Route.get("projects/:id/tasks", "TaskController.index").middleware("auth");
   Route.post("projects/:id/tasks", "TaskController.create").middleware("auth");
-  Route.delete("projects/:id/tasks", "TaskController.destroy").middleware(
-    "auth"
-  );
-  Route.patch("projects/:id/tasks", "TaskController.update").middleware("auth");
+  Route.delete("tasks/:id", "TaskController.destroy").middleware("auth");
+  Route.patch("tasks/:id", "TaskController.update").middleware("auth");
 }).prefix("api");

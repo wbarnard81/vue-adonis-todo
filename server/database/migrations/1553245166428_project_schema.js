@@ -13,6 +13,7 @@ class ProjectSchema extends Schema {
         .references("id")
         .inTable("users"); //projects belongs to a user
       table.string("title", 255);
+      table.boolean("completed");
       table.timestamps();
     });
   }

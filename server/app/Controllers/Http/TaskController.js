@@ -30,20 +30,22 @@ class TaskController {
   async destroy({ auth, request, params }) {
     const user = await auth.getUser();
     const { id } = params;
-    const project = await Project.find(id);
+    const task = await Task.find(id);
+    const project = await task.project().fetch();
     AuthorizationService.verifyPermission(project, user);
-    await project.delete();
-    return project;
+    await task.delete();
+    return task;
   }
 
   async update({ auth, request, params }) {
     const user = await auth.getUser();
     const { id } = params;
-    const project = await Project.find(id);
+    const task = await Task.find(id);
+    const project = await task.project().fetch();
     AuthorizationService.verifyPermission(project, user);
-    project.merge(request.only("description"));
+    project.merge(request.only("description", "completed"));
     await project.save();
-    return project;
+    return task;
   }
 }
 
