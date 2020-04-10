@@ -25,26 +25,22 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
+import { mapState, mapMutations, mapActions } from "vuex";
 export default {
   computed: {
-    ...mapState('authentication', [
-      'registerEmail',
-      'registerPassword',
-      'registerError',
-    ]),
+    ...mapState("authentication", [
+      "registerEmail",
+      "registerPassword",
+      "registerError"
+    ])
   },
+
   methods: {
-    ...mapMutations('authentication', [
-      'setRegisterEmail',
-      'setRegisterPassword',
+    ...mapMutations("authentication", [
+      "setRegisterEmail",
+      "setRegisterPassword"
     ]),
-    ...mapActions('authentication', [
-      'register',
-    ]),
-  },
+    ...mapActions("authentication", ["register"])
+  }
 };
 </script>
-
-<style>
-</style>
